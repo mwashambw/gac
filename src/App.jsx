@@ -14,12 +14,15 @@ import {
   Users,
   Gauge,
   Sparkles,
+  ChevronDown,
+  HelpCircle,
 } from 'lucide-react';
 import './index.css';
 
 const GACTanzaniaWebsite = () => {
   const [currentLang, setCurrentLang] = useState('en');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
   const translations = {
     en: {
@@ -86,6 +89,27 @@ const GACTanzaniaWebsite = () => {
         title: 'About GAC Tanzania',
         content:
           "GAC (Guangzhou Automobile Group) is one of China's top automotive manufacturers, now officially established in Tanzania. We bring cutting-edge electric and hybrid technology that combines efficiency with performance, offering Tanzanians eco-friendly and cost-effective transportation solutions with world-class quality and innovation.",
+      },
+      faq: {
+        title: 'Frequently Asked Questions',
+        questions: [
+          {
+            q: 'Are spare parts available?',
+            a: 'Yes, we maintain a comprehensive inventory of genuine GAC spare parts at our Dar es Salaam location. We ensure availability of essential parts and can order specialized components as needed.',
+          },
+          {
+            q: 'What are the prices of GAC vehicles?',
+            a: 'For detailed pricing information and current offers, please contact our sales team at +255 748 866 666 or sales@gac-tz.com. Our team will provide personalized quotes based on your selected model and financing options.',
+          },
+          {
+            q: 'How long does it take to charge an electric vehicle?',
+            a: 'With a standard home charger, a full charge takes 8-10 hours. With a fast charger, you can charge up to 80% in about 30-45 minutes.',
+          },
+          {
+            q: 'What warranty do GAC vehicles come with?',
+            a: 'GAC vehicles come with a comprehensive manufacturer warranty. Contact us for specific warranty details for each model.',
+          },
+        ],
       },
       contact: {
         title: 'Contact Us',
@@ -159,6 +183,27 @@ const GACTanzaniaWebsite = () => {
         title: 'Kuhusu GAC Tanzania',
         content:
           'GAC (Guangzhou Automobile Group) ni mmoja wa watengenezaji wakubwa wa magari wa China, sasa rasmi ameanzisha ofisi Tanzania. Tunaleta teknolojia ya kisasa ya umeme na hybrid inayochanganya ufanisi na utendaji, ikitoa Watanzania suluhisho la usafiri rafiki wa mazingira na lenye gharama nafuu na ubora wa kimataifa.',
+      },
+      faq: {
+        title: 'Maswali Yanayoulizwa Mara kwa Mara',
+        questions: [
+          {
+            q: 'Je, spea zinapatikana?',
+            a: 'Ndiyo, tunayo akiba kamili ya spea halisi za GAC katika eneo letu la Dar es Salaam. Tunahakikisha upatikanaji wa spea muhimu na tunaweza kuagiza spea maalum inapohitajika.',
+          },
+          {
+            q: 'Bei za magari ya GAC ni kiasi gani?',
+            a: 'Kwa taarifa za kina za bei na matoleo ya sasa, tafadhali wasiliana na timu yetu ya mauzo kwa +255 748 866 666 au sales@gac-tz.com. Timu yetu itatoa nukuu maalum kulingana na muundo uliochagua na chaguo za fedha.',
+          },
+          {
+            q: 'Inachukua muda gani kuchaji gari la umeme?',
+            a: 'Kwa chaja ya kawaida ya nyumbani, chaji kamili inachukua masaa 8-10. Kwa chaja ya haraka, unaweza kuchaji hadi 80% katika dakika 30-45.',
+          },
+          {
+            q: 'Magari ya GAC yanakuja na dhamana gani?',
+            a: 'Magari ya GAC yanakuja na dhamana kamili ya mtengenezaji. Wasiliana nasi kwa maelezo maalum ya dhamana kwa kila muundo.',
+          },
+        ],
       },
       contact: {
         title: 'Wasiliana Nasi',
@@ -553,8 +598,62 @@ const GACTanzaniaWebsite = () => {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-16 bg-gradient-to-br from-red-50 to-orange-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="inline-block p-3 bg-red-100 rounded-full mb-4">
+              <HelpCircle className="h-8 w-8 text-red-600" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              {t.faq.title}
+            </h2>
+            <p className="text-gray-600">
+              {currentLang === 'en'
+                ? 'Find answers to commonly asked questions about GAC vehicles'
+                : 'Pata majibu ya maswali yanayoulizwa mara kwa mara kuhusu magari ya GAC'}
+            </p>
+          </div>
+          <div className="space-y-4">
+            {t.faq.questions.map((item, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300"
+              >
+                <button
+                  onClick={() =>
+                    setOpenFaqIndex(openFaqIndex === index ? null : index)
+                  }
+                  className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                >
+                  <h3 className="text-lg font-bold text-gray-900 pr-4">
+                    {item.q}
+                  </h3>
+                  <ChevronDown
+                    className={`h-6 w-6 text-red-600 flex-shrink-0 transition-transform duration-300 ${
+                      openFaqIndex === index ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${
+                    openFaqIndex === index ? 'max-h-96' : 'max-h-0'
+                  }`}
+                >
+                  <div className="px-6 pb-5 pt-2">
+                    <div className="border-t border-gray-200 pt-4">
+                      <p className="text-gray-600 leading-relaxed">{item.a}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
-      <section id="contact" className="py-16 bg-white">
+      <section id="contact" className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
             {t.contact.title}
